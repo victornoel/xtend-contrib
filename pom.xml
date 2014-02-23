@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>fr.irit.smac.lib.contrib</groupId>
 	<artifactId>xtend-contrib</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>SMAC Xtend Contrib</name>
 	<description>Macros and Extensions for Xtend</description>
 
