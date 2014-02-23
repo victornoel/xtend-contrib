@@ -12,7 +12,7 @@ class JavaExtensions {
 	}
 	
 	@Pure
-	@Inline(value="$3.format(\"%.$2f\", $1)", imported=String)
+	@Inline(value="$3.format(\"%.\"+$2+\"f\", $1)", imported=String)
 	static def toShortString(double d, int nbDigit) {
 		String.format("%."+nbDigit+"f", d)
 	}
