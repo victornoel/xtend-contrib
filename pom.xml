@@ -13,7 +13,7 @@
 	<description>Macros and Extensions for Xtend</description>
 
 	<properties>
-		<xtend-version>2.5.2</xtend-version>
+		<xtend-version>2.5.3</xtend-version>
 	</properties>
 
 	<dependencies>
