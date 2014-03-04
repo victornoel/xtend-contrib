@@ -11,6 +11,7 @@ import org.eclipse.xtend.lib.macro.AbstractMethodProcessor
 import org.eclipse.xtend.lib.macro.Active
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration
+import org.eclipse.xtend.lib.macro.declaration.MethodDeclaration
 
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
@@ -49,17 +50,24 @@ class StepProcessor extends AbstractMethodProcessor {
 		annotatedMethod.addIndirection("_reset_"+name) [extension cc|'''
 			«IF resetBefore»
 			«FOR c: cached»
-			«CachedProcessor.cacheFieldName(c)» = null;
+			«c.invalidate»
 			«ENDFOR»
 			«ENDIF»
 			«IF !annotatedMethod.returnType.void»«annotatedMethod.returnType.toJavaCode» res = «ENDIF»_reset_«name»(«annotatedMethod.parameters.join(",")[simpleName]»);
 			«IF resetAfter»
 			«FOR c: cached»
-			«CachedProcessor.cacheFieldName(c)» = null;
+			«c.invalidate»
 			«ENDFOR»
 			«ENDIF»
 			«IF (!annotatedMethod.returnType.void)»return res;«ENDIF»
 		''']
+	}
+	
+	def String invalidate(MethodDeclaration c) {
+		switch (c.parameters.size) {
+			case 0: '''«CachedProcessor.cacheFieldName(c)» = null;'''
+			default: '''«CachedProcessor.cacheFieldName(c)».invalidateAll();'''
+		}
 	}
 	
 }
