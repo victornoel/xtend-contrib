@@ -44,8 +44,15 @@ class StepProcessor extends AbstractMethodProcessor {
 		
 		val annot = annotatedMethod.findAnnotation(StepCached.findTypeGlobally)
 		
-		val resetBefore = annot.getValue("resetBefore") as Boolean
-		val resetAfter = annot.getValue("resetAfter") as Boolean
+		// there seems to be a problem: https://bugs.eclipse.org/bugs/show_bug.cgi?id=430101
+		val resetBefore = {
+			val r = annot.getValue("resetBefore") as Boolean
+			if (r == null) true else r
+		}
+		val resetAfter = {
+			val r = annot.getValue("resetAfter") as Boolean
+			if (r == null) false else r
+		}
 		
 		annotatedMethod.addIndirection("_reset_"+name) [extension cc|'''
 			«IF resetBefore»
