@@ -11,7 +11,7 @@
 	
 	<groupId>fr.irit.smac.lib.contrib</groupId>
 	<artifactId>xtend-contrib</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.1-SNAPSHOT</version>
 	
 	<name>SMAC Xtend Contrib</name>
 	<url>http://www.irit.fr/~Victor.Noel/</url>
