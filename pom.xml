@@ -42,18 +42,33 @@
 
 	<build>
 		<plugins>
+			<!-- Clean the src-gen folders of the ui project. The Xtext generator 
+				will create files in those directories during generation. The ui project 
+				will *not* clean those directories later. It is done during generate-sources 
+				in order for the file not to be removed on clean but only prior to code generation 
+				from xtend-maven-plugin and exec-maven-plugin. They are not cleaned at clean 
+				because we want them to be versionned. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<!-- We don't want to do the normal clean at generate-sources obviously -->
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+							<filesets>
+								<fileset>
+									<directory>src/main/xtend-gen</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
@@ -70,28 +85,6 @@
 				<configuration>
 					<outputDirectory>src/main/xtend-gen</outputDirectory>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.5</version>
-				<executions>
-					<execution>
-						<!-- hack in order for the file not to be removed on clean but only 
-							prior to code generation from xtend-maven-plugin -->
-						<phase>initialize</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>src/main/xtend-gen</directory>
-								</fileset>
-							</filesets>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
