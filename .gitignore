@@ -1,2 +1,5 @@
 /target/
 /src/main/xtend-gen/
+/.classpath
+/.project
+/.settings/
